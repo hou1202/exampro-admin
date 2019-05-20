@@ -8,7 +8,7 @@
 
                     <div class="layui-card-header" >
                         <div class="self-card-header">
-                            <a href="#/adminer/create" class="layui-btn layui-btn-sm">
+                            <a href="#/aoogi/adminer/create" class="layui-btn layui-btn-sm">
                                 <i class="layui-icon">&#xe654;</i>
                                 <span>新增</span>
                             </a>
@@ -62,7 +62,7 @@
             limit: 10,
             elem: '#tableHash',
             height: 'full-235',
-            url: '/adminer/data', //数据接口
+            url: '/aoogi/adminer/data', //数据接口
             page: true, //开启分页
             cols: [
                 [ //表头
@@ -94,8 +94,8 @@
         //监听状态开关
         form.on('switch(switchStatus)', function(data) {
             var status = this.checked ? 1 : 0 ;
-            $.post("adminer/status",{"id":data.value,"status":status},function(res){
-                layer.msg(res.data);
+            $.post("/aoogi/adminer/status",{"id":data.value,"status":status},function(res){
+                layer.msg(res.msg);
                 table.reload('tableHash');
             });
         });
@@ -103,14 +103,14 @@
         //操作栏监听
         table.on('tool(tIndex)',function(obj){
             if(obj.event === 'detail'){
-                window.location.href ='#/adminer/read/'+obj.data.id;
+                window.location.href ='#/aoogi/adminer/read/'+obj.data.id;
             }else if(obj.event === 'edit'){
                 console.log(obj.data.id);
-                window.location.href ='#/adminer/edit/'+obj.data.id;
+                window.location.href ='#/aoogi/adminer/edit/'+obj.data.id;
             }else if(obj.event === 'del'){
                 layer.confirm('确定删除该管理员?', {icon: 3, title:'提示'}, function(index){
-                    $.post('/adminer/'+obj.data.id,{'_method':'DELETE'},function(res){
-                        layer.msg(res.data);
+                    $.post('/aoogi/adminer/'+obj.data.id,{'_method':'DELETE'},function(res){
+                        layer.msg(res.msg);
                         table.reload('tableHash');
                     });
                     layer.close(index);

@@ -120,9 +120,10 @@
     //监听提交
     form.on('submit(form_submit)', function(data) {
         if(!data.field.status){ data.field.status = 0 }
-        $.post("/adminer/"+"{$Adminer.id}",data.field,function(res){
-            layer.msg(res.data);
-            window.location.href="#/adminer";
+        $.post("/aoogi/adminer/"+"{$Adminer.id}",data.field,function(res){
+            layer.msg(res.msg);
+            if(res.url != "")
+                window.location.href="#"+res.url;
         });
         return false;
     });

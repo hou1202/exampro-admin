@@ -131,7 +131,7 @@ layui.define(mods, function(exports) {
       // 配置路由
       var opt;
       $.ajaxSetup({async : false});
-      $.post('/opts','',function(res){
+      $.post('/aoogi/opts','',function(res){
           opt = res;
       });
       var routeOpts = {
@@ -259,7 +259,7 @@ layui.define(mods, function(exports) {
         },
         elem: '#menu-box',
         remote: {
-          url: '/menu',
+          url: '/aoogi/menu',
           method: 'get'
         },
         cached: false,

@@ -42,7 +42,7 @@ class Login extends Controller
         if(!$admin) return json(['data' =>'帐户或密码信息有误']);
         if(!$admin['status']) return json(['data' =>'帐户已被禁用，请联系管理员']);
         if(!$per = Permission::where('id',$admin['permissions_id'])->where('status',1)->find()) return json(['data' =>'帐户权限组已被禁用']);
-        if(User::login($admin['account'])) return json(['data' =>'登录失败，请重新登录']);
+        if(!User::login($admin['account'])) return json(['data' =>'登录失败，请重新登录']);
         $admin->save([
             'last_ip' => $request->ip(),
             'last_at' => time(),

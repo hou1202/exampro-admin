@@ -92,31 +92,20 @@
         modular:function(value){
             var ret = /(^[a-zA-Z])\w*/;
             if(!ret.test(value)){
-                return '系统路径错误格式,例：admin/index/index';
+                return '系统路径错误格式,例：admin';
             }
 
-        },
-        icon:function(value) {
-            if(value != ''){
-                var ret = /(^#)[a-z0-9]{5}(;)$/;
-                if(!ret.test(value)){
-                    return '路由图标格式错误，例：#xe653;';
-                }
-            }
         }
     });
 
-    form.on('select(selectPId)',function(data){
-       data.value == 0 ? $('#isOpen').css('display','') : $('#isOpen').css('display','none');
-    });
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
         $.post("/router/save_modular",data.field,function(res){
             layer.msg(res.data);
-            if(res.code === 1){
+            /*if(res.code === 1){
                 window.location.href="#"+res.url;
-            }
+            }*/
         });
         return false;
     });

@@ -159,11 +159,10 @@
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
-        $.post("/router",data.field,function(res){
-            layer.msg(res.data);
-            if(res.code === 1){
-                window.location.href="#"+res.url;
-            }
+        $.post("/aoogi/router",data.field,function(res){
+            layer.msg(res.msg);
+            if(res.url != "")
+                window.location.href = "#" + res.url;
         });
         return false;
     });

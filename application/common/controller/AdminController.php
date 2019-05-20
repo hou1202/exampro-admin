@@ -11,7 +11,7 @@ namespace app\common\controller;
 
 use think\Controller;
 
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     //管理员资料
     protected $admin_info;

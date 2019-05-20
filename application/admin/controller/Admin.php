@@ -23,7 +23,7 @@ class Admin extends AdminController
     }
 
     /*
-     * 获取管理员资源信息
+     * 获取资源信息
      *
      * @return json
      * */
@@ -48,13 +48,13 @@ class Admin extends AdminController
         $data = $request -> post();
         $validate = new AdminValidate();
         if(!$validate->scene('status')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
         $adminer = AdminM::get($data['id']);
-        if(!$adminer) return $this->returnJson('非有效数据信息');
-        if($adminer['account'] == Config::get('default_admin')) return $this ->returnJson('该帐户状态无权限禁用');
-        if($adminer['account'] == User::logined_uuid()) return $this ->returnJson('无法禁用自己的帐户状态');
-        return $adminer->save($data) ? $this ->returnJson('状态更新成功') : $this ->returnJson('状态更新失败');
+        if(!$adminer) return $this->failJson('非有效数据信息');
+        if($adminer['account'] == Config::get('default_admin')) return $this ->failJson('该帐户状态无权限禁用');
+        if($adminer['account'] == User::logined_uuid()) return $this ->failJson('无法禁用自己的帐户状态');
+        return $adminer->save($data) ? $this ->successJson('状态更新成功') : $this ->failJson('状态更新失败');
     }
 
     /**
@@ -80,9 +80,9 @@ class Admin extends AdminController
         $data = $request -> post();
         $validate = new AdminValidate();
         if(!$validate->scene('save')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
-        return AdminM::create($data) ? $this ->returnJson('新增成功',1,'/adminer') : $this ->returnJson('添加失败',0);
+        return AdminM::create($data) ? $this ->successJson('新增成功','/aoogi/adminer') : $this ->failJson('添加失败');
 
     }
 
@@ -133,15 +133,15 @@ class Admin extends AdminController
     {
         //
         $adminer = AdminM::get($id);
-        if(!$adminer) return $this->returnJson('非有效数据信息');
+        if(!$adminer) return $this->failJson('非有效数据信息');
         $data = $request -> post();
         if(empty($data['password'])) unset($data['password']);
 
         $validate = new AdminValidate();
         if(!$validate->sceneEdit()->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
-        return $adminer -> save($data) ? $this ->returnJson('更新成功') : $this ->returnJson('更新失败');
+        return $adminer -> save($data) ? $this ->successJson('更新成功','/aoogi/adminer') : $this ->failJson('更新失败');
     }
 
     /**
@@ -154,9 +154,9 @@ class Admin extends AdminController
     {
         //
         $adminer = AdminM::get($id);
-        if(!$adminer) return $this->returnJson('非有效数据信息');
-        if($adminer['account'] == Config::get('default_admin')) return $this ->returnJson('该帐户无权限删除');
-        if($adminer['account'] == User::logined_uuid()) return $this ->returnJson('无法删除自己的帐户');
-        return $adminer->delete() ? $this->returnJson('删除成功') : $this->returnJson('删除失败');
+        if(!$adminer) return $this->failJson('非有效数据信息');
+        if($adminer['account'] == Config::get('default_admin')) return $this ->failJson('该帐户无权限删除');
+        if($adminer['account'] == User::logined_uuid()) return $this ->failJson('无法删除自己的帐户');
+        return $adminer->delete() ? $this->successJson('删除成功') : $this->failJson('删除失败');
     }
 }

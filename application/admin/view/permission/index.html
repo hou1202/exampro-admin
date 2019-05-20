@@ -7,7 +7,7 @@
                     <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
 
                     <div class="layui-card-header">
-                        <a href="#/permission/create" class="layui-btn layui-btn-sm">
+                        <a href="#/aoogi/permission/create" class="layui-btn layui-btn-sm">
                             <i class="layui-icon">&#xe654;</i>
                             <span>新增</span>
                         </a>
@@ -59,7 +59,7 @@
             limits:[10,20],
             elem: '#tableHash',
             height: 'full-235',
-            url: '/permission/data', //数据接口
+            url: '/aoogi/permission/data', //数据接口
             page: true, //开启分页
             cols: [
                 [ //表头
@@ -81,7 +81,7 @@
         //监听状态开关
         form.on('switch(switchStatus)', function(data) {
             var status = this.checked ? 1 : 0 ;
-            $.post("permission/status",{"id":data.value,"status":status},function(res){
+            $.post("/aoogi/permission/status",{"id":data.value,"status":status},function(res){
                 layer.msg(res.data);
                 table.reload('tableHash');
             });
@@ -90,13 +90,13 @@
         //操作栏监听
         table.on('tool(tIndex)',function(obj){
             if(obj.event === 'detail'){
-                window.location.href ='#/permission/read/'+obj.data.id;
+                window.location.href ='#/aoogi/permission/read/'+obj.data.id;
             }else if(obj.event === 'edit'){
-                window.location.href ='#/permission/edit/'+obj.data.id;
+                window.location.href ='#/aoogi/permission/edit/'+obj.data.id;
             }else if(obj.event === 'del'){
                 layer.confirm('确定删除该权限组?', {icon: 3, title:'提示'}, function(index){
-                    $.post('/permission/'+obj.data.id,{'_method':'DELETE'},function(res){
-                        layer.msg(res.data);
+                    $.post('/aoogi/permission/'+obj.data.id,{'_method':'DELETE'},function(res){
+                        layer.msg(res.msg);
                         table.reload('tableHash');
                     });
                     layer.close(index);

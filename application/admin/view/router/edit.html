@@ -171,11 +171,11 @@
         if(!data.field.main){
             data.field.main = 0;
         }
-        $.post("/router/"+"{$Route.id}",data.field,function(res){
-            layer.msg(res.data);
-            if(res.code === 1) {
+        $.post("/aoogi/router/"+"{$Route.id}",data.field,function(res){
+            layer.msg(res.msg);
+            if(res.url != "")
                 window.location.href = "#" + res.url;
-            }
+
         });
         return false;
     });

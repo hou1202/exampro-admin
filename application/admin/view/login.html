@@ -64,7 +64,7 @@
 
       //监听提交
       form.on('submit(form_submit)', function(data) {
-          $.post("/login",data.field,function(res){
+          $.post("/adminLogin",data.field,function(res){
               layer.msg(res.data);
               if(res.url){
                   setTimeout(function() {

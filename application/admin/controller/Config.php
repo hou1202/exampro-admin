@@ -62,9 +62,9 @@ class Config extends AdminController
         ];
         $validate = new Validate($rule);
         if(!$validate->check($data)){
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
         }
-        return ConfigM::create($data) ? $this->returnJson('新增成功',1,'/config') : $this->returnJson('添加失败',0);
+        return ConfigM::create($data) ? $this->successJson('新增成功','/aoogi/config') : $this->failJson('添加失败',0);
     }
 
     /**
@@ -105,16 +105,16 @@ class Config extends AdminController
 
         $data = $request -> post();
         $config = ConfigM::get($id);
-        if(!$config) return $this->returnJson('非有效数据信息',0);
+        if(!$config) return $this->failJson('非有效数据信息');
         $rule = [
             'title|参数名称' => 'require|max:15',
             'param|参数值' => 'require',
         ];
         $validate = new Validate($rule);
         if(!$validate->check($data)){
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
         }
-        return $config->save($data) ? $this->returnJson('更新成功',1,'/config') : $this->returnJson('更新失败',0);
+        return $config->save($data) ? $this->successJson('更新成功','/aoogi/config') : $this->failJson('更新失败');
     }
 
     /**
@@ -126,6 +126,6 @@ class Config extends AdminController
     public function delete($id)
     {
         //
-        return ConfigM::destroy($id) ? $this->returnJson('删除成功') : $this->returnJson('删除失败');
+        return ConfigM::destroy($id) ? $this->successJson('删除成功') : $this->failJson('删除失败');
     }
 }

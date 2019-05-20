@@ -28,8 +28,8 @@ class Router extends AdminController
             $map[] = ['id|title|router|path|menu','like','%'.trim($data['keyword']).'%'];
         }
         $list = RouteM::where($map)
-                        ->limit(($data['page']-1)*$data['limit'],$data['limit'])
-                        ->select();
+            ->limit(($data['page']-1)*$data['limit'],$data['limit'])
+            ->select();
         $count = RouteM::where($map)->count('id');
         return $this->kitJson($list,$count);
     }
@@ -40,11 +40,11 @@ class Router extends AdminController
         $data = $request -> post();
         $validate = new RouterV();
         if(!$validate->scene('status')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
         $route = RouteM::get($data['id']);
-        if(!$route) return $this->returnJson('非有效数据信息');
-        return $route->save($data) ? $this->returnJson('状态更新成功') : $this->returnJson('状态更新失败');
+        if(!$route) return $this->failJson('非有效数据信息');
+        return $route->save($data) ? $this->successJson('状态更新成功') : $this->failJson('状态更新失败');
     }
 
     /**
@@ -71,9 +71,9 @@ class Router extends AdminController
         $data = $request -> post();
         $validate = new RouterV();
         if(!$validate->scene('save')->check($data)){
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
         }
-        return RouteM::create($data) ? $this->returnJson('新增成功',1,'/router') : $this->returnJson('添加失败',0);
+        return RouteM::create($data) ?$this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
     }
 
     /**
@@ -103,8 +103,15 @@ class Router extends AdminController
         if(!$validate->scene('modular')->check($data)){
             return $this->returnJson($validate->getError());
         }
+        //var_dump($data);die;
+        $pResource = RouteM::where('id',$data['pid'])->value('pid');
+
+        $resp = array();
+        if(isset($data['type']['site']) ){
+            var_dump(1);die;
+        }
         var_dump($data);die;
-        return RouteM::create($data) ? $this->returnJson('新增成功',1,'/router') : $this->returnJson('添加失败',0);
+        return RouteM::create($data) ?$this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
     }
 
     /**
@@ -149,12 +156,12 @@ class Router extends AdminController
     {
         //
         $route = RouteM::get($id);
-        if(!$route) return $this->returnJson('非有效数据信息');
-        $data = $request -> post();
+        if(!$route) return $this->failJson('非有效数据信息');
+        $data = $request -> param();
         $validate = new RouterV();
         if(!$validate->scene('save')->check($data))
-            return $this->returnJson($validate->getError());
-        return $route->save($data) ? $this->returnJson('更新成功',1,'/router') : $this->returnJson('更新失败');
+            return $this->failJson($validate->getError());
+        return $route->save($data) ? $this->successJson('更新成功','/aoogi/router') : $this->failJson('更新失败');
     }
 
     /**
@@ -167,8 +174,8 @@ class Router extends AdminController
     {
         //
         if(RouteM::where('pid',$id)->find())
-            return $this->returnJson('该路由为主路由，若要删除请先删除所属子路由');
-        return RouteM::destroy($id) ? $this->returnJson('删除成功') : $this->returnJson('删除失败');
+            return $this->failJson('该路由为主路由，若要删除请先删除所属子路由');
+        return RouteM::destroy($id) ? $this->successJson('删除成功') : $this->failJson('删除失败');
 
     }
 }

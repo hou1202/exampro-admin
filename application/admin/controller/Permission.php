@@ -39,11 +39,11 @@ class Permission extends AdminController
         $data = $request -> post();
         $validate = new PermissionV();
         if(!$validate->scene('status')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
         $permission = PermissionM::get($data['id']);
-        if(!$permission) return $this->returnJson('非有效数据信息');
-        return $permission->save($data) ? $this->returnJson('状态更新成功') : $this->returnJson('状态更新失败');
+        if(!$permission) return $this->failJson('非有效数据信息');
+        return $permission->save($data) ? $this->successJson('状态更新成功') : $this->failJson('状态更新失败');
     }
 
 
@@ -73,10 +73,10 @@ class Permission extends AdminController
         $data = $request -> post();
         $validate = new PermissionV();
         if(!$validate->scene('save')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
         $data['router_id'] = implode('-',$data['router_id']);
-        return PermissionM::create($data) ? $this->returnJson('新增成功',1,'/permission') : $this->returnJson('添加失败',0);
+        return PermissionM::create($data) ? $this->successJson('新增成功','/aoogi/permission') : $this->failJson('添加失败');
     }
 
     /**
@@ -125,15 +125,15 @@ class Permission extends AdminController
     public function update(Request $request, $id)
     {
         $permission = PermissionM::get($id);
-        if(!$permission) return $this->returnJson('非有效数据信息');
+        if(!$permission) return $this->failJson('非有效数据信息');
 
         $data = $request -> post();
         $validate = new PermissionV();
         if(!$validate->scene('save')->check($data))
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
 
         $data['router_id'] = implode('-',$data['router_id']);
-        return $permission->save($data) ? $this->returnJson('更新成功') : $this->returnJson('更新失败');
+        return $permission->save($data) ? $this->successJson('更新成功','/aoogi/permission') : $this->failJson('更新失败');
     }
 
     /**
@@ -146,8 +146,8 @@ class Permission extends AdminController
     {
         //
         if(Admin::where('permissions_id',$id)->find())
-            return $this->returnJson('该权限组正在被管理员使用中，请先调整管理员权限组');
+            return $this->failJson('该权限组正在被管理员使用中，请先调整管理员权限组');
 
-        return PermissionM::destroy($id) ? $this->returnJson('删除成功') : $this->returnJson('删除失败');
+        return PermissionM::destroy($id) ? $this->successJson('删除成功') : $this->failJson('删除失败');
     }
 }

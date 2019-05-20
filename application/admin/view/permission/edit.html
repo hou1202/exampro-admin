@@ -118,9 +118,10 @@
         if(!data.field.status){
             data.field.status = 0
         }
-        $.post("/permission/"+"{$Per.id}",data.field,function(res){
-            layer.msg(res.data);
-            window.location.href="#/permission";
+        $.post("/aoogi/permission/"+"{$Per.id}",data.field,function(res){
+            layer.msg(res.msg);
+            if(res.url != "")
+                window.location.href = "#" + res.url;
         });
         return false;
     });
