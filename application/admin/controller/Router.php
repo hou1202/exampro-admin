@@ -54,8 +54,6 @@ class Router extends AdminController
      */
     public function create()
     {
-        //
-        //var_dump($this->request->server());
         $main = RouteM::field('id,title')->where('main',1)->where('status',1)->select();
         $this->assign('main',$main);
         return view('router/create');
@@ -68,6 +66,35 @@ class Router extends AdminController
      * @return \think\Response
      */
     public function save(Request $request)
+    {
+        //
+        $data = $request -> post();
+        $validate = new RouterV();
+        if(!$validate->scene('save')->check($data)){
+            return $this->returnJson($validate->getError());
+        }
+        return RouteM::create($data) ? $this->returnJson('新增成功',1,'/router') : $this->returnJson('添加失败',0);
+    }
+
+    /**
+     * 显示模块化创建资源表单页.
+     *
+     * @return \think\Response
+     */
+    public function createModular()
+    {
+        $main = RouteM::field('id,title')->where('main',1)->where('status',1)->select();
+        $this->assign('main',$main);
+        return view('router/create_modular');
+    }
+
+    /**                                  
+     * 保存新建的模块化资源
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function saveModular(Request $request)
     {
         //
         $data = $request -> post();

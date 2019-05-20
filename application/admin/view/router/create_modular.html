@@ -1,0 +1,129 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
+                    <div class="layui-card-header">
+                        <a href="javascript:history.go(-2);" class="layui-btn layui-btn-sm">
+                            <i class="layui-icon">&#xe65a;</i>
+                            <span>返回</span>
+                        </a>
+                    </div>
+
+                    <div class="layui-card-body">
+
+                        <form class="layui-form">
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">路由名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required|title" autocomplete="off" placeholder="设置路由名称，如：管理员" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">模块名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="modular" lay-verify="modular" autocomplete="off" placeholder="设置模块路由名称,例：admin" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">父级路由</label>
+                                <div class="layui-input-block ">
+                                    <select name="pid" lay-filter="selectPId">
+                                        {volist name="main" id="m"}
+                                            <option value="{$m.id}">{$m.title}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-bg">
+                                <label class="layui-form-label">模块类型</label>
+                                <div class="layui-input-block ">
+                                    <input type="checkbox" name="type[site]" title="设置" checked>
+                                    <input type="checkbox" name="type[list]" title="列表" checked>
+                                    <input type="checkbox" name="type[status]" title="状态" checked>
+                                    <input type="checkbox" name="type[create]" title="新增" checked>
+                                    <input type="checkbox" name="type[edit]" title="编辑" checked>
+                                    <input type="checkbox" name="type[del]" title="删除" checked>
+                                    <input type="checkbox" name="type[read]" title="查看" checked>
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="form_submit">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  layui.use(['form', 'layedit', 'route'], function() {
+    var $ = layui.jquery,
+        form = layui.form,
+        route = layui.route,
+        layer = layui.layer;
+
+    //设置nav标题
+    $("#navTitle").text(route.getRoute().name);
+
+    form.render();
+
+    //自定义验证规则
+    form.verify({
+        title: function(value) {
+            if (value.length < 1 || value.length > 25) {
+                return '路由名称长度应在1-25个字符之间';
+            }
+        },
+        modular:function(value){
+            var ret = /(^[a-zA-Z])\w*/;
+            if(!ret.test(value)){
+                return '系统路径错误格式,例：admin/index/index';
+            }
+
+        },
+        icon:function(value) {
+            if(value != ''){
+                var ret = /(^#)[a-z0-9]{5}(;)$/;
+                if(!ret.test(value)){
+                    return '路由图标格式错误，例：#xe653;';
+                }
+            }
+        }
+    });
+
+    form.on('select(selectPId)',function(data){
+       data.value == 0 ? $('#isOpen').css('display','') : $('#isOpen').css('display','none');
+    });
+
+    //监听提交
+    form.on('submit(form_submit)', function(data) {
+        $.post("/router",data.field,function(res){
+            layer.msg(res.data);
+            if(res.code === 1){
+                window.location.href="#"+res.url;
+            }
+        });
+        return false;
+    });
+
+  });
+</script>
+
+<style scoped>
+
+</style>

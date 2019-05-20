@@ -4,7 +4,7 @@
             <div class="layui-card">
                 <div class="layui-card-body">
 
-                    <blockquote class="layui-elem-quote layui-text"> 新增路由 </blockquote>
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
                     <div class="layui-card-header">
                         <a href="javascript:history.go(-2);" class="layui-btn layui-btn-sm">
                             <i class="layui-icon">&#xe65a;</i>
@@ -33,7 +33,7 @@
                             <div class="layui-form-item layui-input-md">
                                 <label class="layui-form-label">菜单路由</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="menu" lay-verify="router" autocomplete="off" placeholder="设置菜单路由（原则上与系统路由一致）" class="layui-input">
+                                    <input type="text" name="menu" lay-verify="router" autocomplete="off" placeholder="设置菜单路由,例：/admin（原则上保持唯一性）" class="layui-input">
                                 </div>
                             </div>
 
@@ -83,6 +83,13 @@
                                 <div class="layui-input-block">
                                     <input type="checkbox"  id="isMain" name="main" value="1" lay-skin="switch" lay-text=" 是 | 否 ">
                                 </div>
+                           </div>
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">配置项路由</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox"  name="opts" value="1" lay-skin="switch" lay-text=" 是 | 否 ">
+                                </div>
                             </div>
 
 
@@ -102,10 +109,14 @@
 
 
 <script>
-  layui.use(['form', 'layedit', 'laydate'], function() {
+  layui.use(['form', 'layedit', 'route'], function() {
     var $ = layui.jquery,
         form = layui.form,
+        route = layui.route,
         layer = layui.layer;
+
+    //设置nav标题
+    $("#navTitle").text(route.getRoute().name);
 
     form.render();
 

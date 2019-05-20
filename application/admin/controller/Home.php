@@ -50,10 +50,10 @@ class Home extends AdminController
         $user = User::user();
         //系统默认管理员获取全部菜单
         if($user['account'] === Config::get('default_admin')){
-            $res = Router::where('status',1)->all();
+            $res = Router::where('status',1)->where('main',1)->all();
         }else{
             $roles = Auth::getGroups();
-            $res = Router::where('id','in',$roles)->where('status',1)->select();
+            $res = Router::where('id','in',$roles)->where('status',1)->where('main',1)->select();
         };
         $xml = array();
         foreach($res as $router){
@@ -83,7 +83,6 @@ class Home extends AdminController
             }
         }
 
-
         return json($xml);
 
     }
@@ -91,7 +90,7 @@ class Home extends AdminController
     //路由配置项菜单
     public function opts()
     {
-        $res = Router::where('status',1)->select();
+        $res = Router::where('status',1)->where('opts',1)->select();
         $xml = [];
         foreach($res as $router){
             /*if($router['pid'] == 0){

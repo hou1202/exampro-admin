@@ -4,7 +4,7 @@
             <div class="layui-card">
                 <div class="layui-card-body">
 
-                    <blockquote class="layui-elem-quote layui-text"> 编辑配置参数 </blockquote>
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
                     <div class="layui-card-header">
                         <a href="javascript:history.go(-2);" class="layui-btn layui-btn-sm">
                             <i class="layui-icon">&#xe65a;</i>
@@ -47,12 +47,16 @@
 
 
 <script>
-  layui.use(['form', 'layedit', 'laydate'], function() {
+  layui.use(['form', 'layedit', 'laydate','route'], function() {
     var $ = layui.jquery,
         form = layui.form,
+        route = layui.route,
         layer = layui.layer;
 
     form.render();
+
+    //设置nav标题
+    $("#navTitle").text(route.getRoute().name);
 
     //自定义验证规则
     form.verify({

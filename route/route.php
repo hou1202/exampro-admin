@@ -15,6 +15,7 @@ Route::get('think', function () {
 Route::get('/','admin/home/home');
 Route::rule('/','index/index','get');
 Route::get('hello','index/index/hello');
+
 //后台管理模块路由-admin
 
 Route::get('setting','admin/set/index');
@@ -41,6 +42,8 @@ Route::post('adminer/status','admin/admin/setStatus');
 Route::resource('router','admin/router')->rest('edit',['GET', '/edit/:id','edit']);
 Route::post('router/data','admin/router/getData');
 Route::post('router/status','admin/router/setStatus');
+Route::get('router/create_modular','admin/router/createModular');
+Route::post('router/save_modular','admin/router/saveModular');
 
 //权限管理permission
 Route::resource('permission','admin/permission')->rest('edit',['GET', '/edit/:id','edit']);

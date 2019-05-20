@@ -4,7 +4,7 @@
             <div class="layui-card">
                 <div class="layui-card-body">
 
-                    <blockquote class="layui-elem-quote layui-text"> 编辑权限组 </blockquote>
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
                     <div class="layui-card-header">
                         <a href="javascript:history.go(-2);" class="layui-btn layui-btn-sm">
                             <i class="layui-icon">&#xe65a;</i>
@@ -90,11 +90,15 @@
 
 
 <script>
-  layui.use(['form', 'layedit', 'laydate','element'], function() {
+  layui.use(['form', 'route', 'element'], function() {
     var $ = layui.jquery,
         form = layui.form,
         layer = layui.layer,
+        route = layui.route,
         element = layui.element;
+
+    //设置nav标题
+    $("#navTitle").text(route.getRoute().name);
 
     form.render();
 

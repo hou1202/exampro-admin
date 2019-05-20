@@ -4,7 +4,7 @@
             <div class="layui-card">
 
                 <div class="layui-card-body">
-                    <blockquote class="layui-elem-quote layui-text"> 配置参数设置 </blockquote>
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
 
                     <div class="layui-card-header">
                         <div class="self-card-header">
@@ -46,12 +46,15 @@
 <script>
     layui.config({
         base: '/static/admin/js/'
-    }).use(['jquery', 'mockjs', 'table', 'sidebar', 'form'], function () {
+    }).use(['jquery', 'table', 'form','route'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             form = layui.form,
             route = layui.route;
+
+        //设置nav标题
+        $("#navTitle").text(route.getRoute().name);
 
         //表格数据获取及定义
         var tableLoad = table.render({

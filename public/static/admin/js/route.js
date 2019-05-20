@@ -86,8 +86,9 @@ layui.define(['utils', 'jquery', 'lodash', 'nprogress', 'layer'], function(expor
 
     if (c === undefined) {
       //当返回为“undefined”时，判断是否是动态地址
-      if(utils.match(href[0],routes) != false) {
-        c = utils.match(href[0],routes);
+      var m = utils.match(href[0],routes);
+      if(m != false) {
+        c = m;
       }
       //return c;
     }

@@ -4,7 +4,7 @@
             <div class="layui-card">
 
                 <div class="layui-card-body">
-                    <blockquote class="layui-elem-quote layui-text"> 管理员设置 </blockquote>
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
 
                     <div class="layui-card-header" >
                         <div class="self-card-header">
@@ -45,12 +45,15 @@
 <script>
     layui.config({
         base: '/static/admin/js/'
-    }).use(['jquery', 'table', 'form'], function () {
+    }).use(['jquery', 'table', 'form','route'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
+            route = layui.route,
             form = layui.form;
 
+        //设置nav标题
+        $("#navTitle").text(route.getRoute().name);
 
         //第一个实例
         table.render({
@@ -100,7 +103,7 @@
         //操作栏监听
         table.on('tool(tIndex)',function(obj){
             if(obj.event === 'detail'){
-                window.location.href ='#/adminer/'+obj.data.id;
+                window.location.href ='#/adminer/read/'+obj.data.id;
             }else if(obj.event === 'edit'){
                 console.log(obj.data.id);
                 window.location.href ='#/adminer/edit/'+obj.data.id;
