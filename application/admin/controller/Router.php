@@ -98,10 +98,12 @@ class Router extends AdminController
     {
         //
         $data = $request -> post();
+
         $validate = new RouterV();
-        if(!$validate->scene('save')->check($data)){
+        if(!$validate->scene('modular')->check($data)){
             return $this->returnJson($validate->getError());
         }
+        var_dump($data);die;
         return RouteM::create($data) ? $this->returnJson('新增成功',1,'/router') : $this->returnJson('添加失败',0);
     }
 
