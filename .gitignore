@@ -3,4 +3,8 @@
 *.log
 /config/app.php
 /config/database.php
+/public/uploads/
+/public/uploads
+/public/upload/
+/public/upload
 
