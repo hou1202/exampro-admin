@@ -17,48 +17,42 @@
                         <form class="layui-form">
 
                             <div class="layui-form-item layui-input-md">
-                                <label class="layui-form-label">路由名称</label>
+                                <label class="layui-form-label">课程代码</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="title" lay-verify="required|title" autocomplete="off" placeholder="设置路由名称，如：管理员" class="layui-input">
+                                    <input type="number" name="code" lay-verify="required|number|code1|code2" autocomplete="off" placeholder="设置课程代码" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-form-item layui-input-md">
-                                <label class="layui-form-label">模块名称</label>
+                                <label class="layui-form-label">课程名称</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="modular" lay-verify="modular" autocomplete="off" placeholder="设置模块路由名称,例：admin (注意不要与现有路由名称重复)" class="layui-input">
+                                    <input type="text" name="title" lay-verify="required|title" autocomplete="off" placeholder="设置课程名称" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-form-item layui-input-md">
-                                <label class="layui-form-label">父级路由</label>
+                                <label class="layui-form-label">课程分类</label>
                                 <div class="layui-input-block ">
-                                    <select name="pid" lay-filter="selectPId">
-                                        {volist name="main" id="m"}
-                                            <option value="{$m.id}">{$m.title}</option>
+                                    <select name="classify_id">
+                                        {volist name="Classify" id="c"}
+                                            <option value="{$c.id}">{$c.title}</option>
                                         {/volist}
                                     </select>
                                 </div>
                             </div>
 
                             <div class="layui-form-item layui-input-bg">
-                                <label class="layui-form-label">模块类型</label>
+                                <label class="layui-form-label">考题类型</label>
                                 <div class="layui-input-block ">
-                                    <input type="checkbox" name="type[site]" title="设置" checked>
-                                    <input type="checkbox" name="type[list]" title="列表" checked>
-                                    <input type="checkbox" name="type[status]" title="状态" checked>
-                                    <input type="checkbox" name="type[create]" title="新增" checked>
-                                    <input type="checkbox" name="type[edit]" title="编辑" checked>
-                                    <input type="checkbox" name="type[del]" title="删除" checked>
-                                    <input type="checkbox" name="type[read]" title="查看" checked>
+                                    {volist name="Mold" id="m"}
+                                        <input type="checkbox" name="mold_id[{$m.id}]" value="{$m.id}" title="{$m.title}">
+                                    {/volist}
                                 </div>
                             </div>
-
 
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     <button class="layui-btn" lay-submit="" lay-filter="form_submit">立即提交</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                 </div>
                             </div>
                     </form>
@@ -86,26 +80,25 @@
     form.verify({
         title: function(value) {
             if (value.length < 1 || value.length > 25) {
-                return '路由名称长度应在1-25个字符之间';
+                return '课程名称名称长度应在1-25个字符之间';
             }
         },
-        modular:function(value){
-            var ret = /(^[a-zA-Z])\w*/;
-            if(!ret.test(value)){
-                return '系统路径错误格式,例：admin';
+        code1: [/^[0-9]*$/, '类型代码设置有误；例：00182'],
+        code2: function(value) {
+            if (value.length > 6) {
+                return '类型代码设置有误；例：00182';
             }
+        },
 
-        }
+
     });
-
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
-        $.post("/aoogi/router/save_modular",data.field,function(res){
+        $.post("/aoogi/course",data.field,function(res){
             layer.msg(res.msg);
-            if(res.code === 1)
-                window.location.href="#"+res.url;
-
+            if(res.url != "")
+                window.location.href = "#" + res.url;
         });
         return false;
     });
@@ -113,6 +106,3 @@
   });
 </script>
 
-<style scoped>
-
-</style>

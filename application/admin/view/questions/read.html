@@ -1,0 +1,76 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
+                    <div class="layui-card-header">
+                        <a href="javascript:history.go(-2);" class="layui-btn layui-btn-sm">
+                            <i class="layui-icon">&#xe65a;</i>
+                            <span>返回</span>
+                        </a>
+                    </div>
+
+                    <div class="layui-card-body">
+
+                        <form class="layui-form">
+                            <input type="hidden" name="_method" value="PUT" >
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">课程代码</label>
+                                <div class="layui-input-block">
+                                    <input type="number"  value="{$Course.code}" disabled autocomplete="off"  class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">课程名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" value="{$Course.title}"  disabled autocomplete="off"  class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">课程分类</label>
+                                <div class="layui-input-block">
+                                    <input type="text" value="{$Course.classify_name}"  disabled autocomplete="off"  class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-input-bg">
+                                <label class="layui-form-label">考题类型</label>
+                                <div class="layui-input-block ">
+                                    {volist name="Mold" id="m"}
+                                        {if in_array($m.id,$Course.mold_id)}
+                                        <input type="checkbox"  readonly title="{$m.title}" checked>
+                                        {/if}
+                                    {/volist}
+                                </div>
+                            </div>
+
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+  layui.use(['form', 'route'], function() {
+    var $ = layui.jquery,
+        form = layui.form,
+        route = layui.route,
+        layer = layui.layer;
+
+    //设置nav标题
+    $("#navTitle").text(route.getRoute().name);
+
+    form.render();
+
+
+  });
+</script>

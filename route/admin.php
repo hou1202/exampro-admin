@@ -61,6 +61,22 @@ Route::post('aoogi/permission/status','admin/permission/setStatus');
 Route::resource('aoogi/config','admin/config')->rest('edit',['GET', '/edit/:id','edit'])->except(['read']);
 Route::post('aoogi/config/data','admin/config/getData');
 
+//分类设置模块classify
+Route::resource('aoogi/classify','admin/classify')->rest('edit',['GET', '/edit/:id','edit'])->except(['read']);
+Route::post('aoogi/classify/data','admin/classify/getData');
+
+//课程设置模块course
+Route::resource('aoogi/course','admin/course')->rest('edit',['GET', '/edit/:id','edit']);
+Route::post('aoogi/course/data','admin/course/getData');
+
+//课程设置模块course
+Route::resource('aoogi/mold','admin/mold')->rest('edit',['GET', '/edit/:id','edit'])->except(['read']);
+Route::post('aoogi/mold/data','admin/mold/getData');
+
+//题库管理模块questions
+Route::resource('aoogi/questions','admin/questions')->rest('edit',['GET', '/edit/:id','edit']);
+Route::post('aoogi/questions/data','admin/questions/getData');
+Route::post('aoogi/questions/status','admin/questions/setStatus');
 
 //图片上传处理
 Route::post('uploader/[:genre]','admin/Uploader/uploader')->pattern(['genre' => '1']);

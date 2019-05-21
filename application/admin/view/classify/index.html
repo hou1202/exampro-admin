@@ -1,0 +1,111 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+
+                <div class="layui-card-body">
+                    <blockquote class="layui-elem-quote layui-text" id="navTitle"></blockquote>
+
+                    <div class="layui-card-header">
+                        <div class="self-card-header">
+                            <a href="#/aoogi/classify/create" class="layui-btn layui-btn-sm">
+                                <i class="layui-icon">&#xe654;</i>
+                                <span>新增</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="layui-card-body">
+                        <!--表格主体-->
+                        <table id="tableHash" lay-filter="tIndex"></table>
+
+                        <!--操作控制-->
+                        <script type="text/html" id="barHash">
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        </script>
+
+                        <!--状态显示控制-->
+                        <script type="text/html" id="setStatus">
+                            <input type="checkbox" name="status" lay-filter="switchStatus" lay-skin="switch" {{# if(d.status){ }}checked{{#} }} lay-text="开启|禁用" value="{{d.id}}">
+                        </script>
+
+                        <!--缩略图显示控制-->
+                        <script type="text/html" id="setImg">
+                            <img src="{{d.thumbnail}}" alt="" style="width:35px;height:35px;">
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    layui.config({
+        base: '/static/admin/js/'
+    }).use(['jquery', 'table', 'form', 'route'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            route = layui.route,
+            form = layui.form;
+
+        //设置nav标题
+        $("#navTitle").text(route.getRoute().name);
+
+        //表格数据获取及定义
+        var tableLoad = table.render({
+            method: 'post',
+            limit: 10,
+            limits:[10,20],
+            elem: '#tableHash',
+            height: 'full-235',
+            url: '/aoogi/classify/data', //数据接口
+            page: true, //开启分页
+            cols: [
+                [ //表头
+                    {
+                        field: 'id', title: 'ID', width: 80, sort: true, align: 'center', fixed: 'left'
+                    }, {
+                        field: 'title', title: '分类名称', align: 'center'
+                    }, {
+                        field: 'pid_name', title: '父级分类', align: 'center'
+                    }, {
+                        field: 'menu', title: '缩略图', align: 'center', minWidth: 80, templet:'#setImg'
+                    },{
+                        fixed: 'right', title:'操作', align: 'center', minWidth: 200, toolbar: '#barHash'
+                    }
+                ]
+            ]
+        });
+
+
+        //操作栏监听
+        table.on('tool(tIndex)',function(obj){
+            if(obj.event === 'edit'){
+                window.location.href ='#/aoogi/classify/edit/'+obj.data.id;
+            }else if(obj.event === 'del'){
+                layer.confirm('确定删除该分类?', {icon: 3, title:'提示'}, function(index){
+                    $.post('/aoogi/classify/'+obj.data.id,{'_method':'DELETE'},function(res){
+                        layer.msg(res.msg);
+                        table.reload('tableHash');
+                    });
+                    layer.close(index);
+                });
+
+            }
+        });
+
+
+
+    });
+</script>
+
+
+<style scoped>
+
+</style>

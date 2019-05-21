@@ -101,7 +101,7 @@ class Router extends AdminController
 
         $validate = new RouterV();
         if(!$validate->scene('modular')->check($data)){
-            return $this->returnJson($validate->getError());
+            return $this->failJson($validate->getError());
         }
         //var_dump($data);die;
         $pResource = RouteM::where('id',$data['pid'])->value('pid');
@@ -116,7 +116,7 @@ class Router extends AdminController
             $siteResp['router'] = '/aoogi/'.$data['modular'];
             $siteResp['menu'] = '/aoogi/'.$data['modular'];
             $siteResp['path'] = 'admin/'.$data['modular'].'/index';
-            $siteResp['title'] = $data['title'].'设置';
+            $siteResp['title'] = $data['title'].'管理';
             $siteResp['icon'] = '#xe653;';
             $siteResp['open'] = 0;
             $siteResp['main'] = 1;

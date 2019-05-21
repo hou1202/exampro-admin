@@ -1,10 +1,20 @@
-.layui-input-sm{
-    width:30%;
+/*定义input输入框长度*/
+.layui-input-sm .layui-input-inline{
+    width:30% !important;
 }
-.layui-input-md{
+.layui-input-sm .layui-input-block{
+    width:30% !important;
+}
+.layui-input-md .layui-input-inline{
     width:50%;
 }
-.layui-input-bg{
+.layui-input-md .layui-input-block{
+    width:50%;
+}
+.layui-input-bg .layui-input-inline{
+    width:80%;
+}
+.layui-input-bg .layui-input-block{
     width:80%;
 }
 
@@ -12,6 +22,15 @@
     display:inline;
     float:left;
 }
+/*定义layu-buttom按钮颜色*/
+.layui-btn-green{
+    background-color: #90ccaa !important;
+}
+.layui-btn-pink{
+    background-color: #b6abcc !important;
+}
+
+/*定义搜索*/
 .self-search{
     float:left;
     margin:0 20px;
@@ -50,3 +69,9 @@
     color:#009688;
     font-weight: 900;
 }
+
+
+
+
+
+
