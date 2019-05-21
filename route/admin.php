@@ -21,7 +21,7 @@
 ]);*/
 
 
-Route::get('/','admin/home/home');
+Route::get('/','admin/login/index');
 
 //后台管理模块路由-admin
 
@@ -34,7 +34,7 @@ Route::get('aoogi/main','admin/home/main');
 Route::post('aoogi/logout','admin/home/logout');
 Route::get('aoogi/menu','admin/home/menu');                   //导航栏加载
 Route::post('aoogi/opts','admin/home/opts');                   //导航栏加载
-Route::get('aoogi//error','admin/error/index');      //ERROR页面
+Route::get('aoogi/error','admin/error/index');      //ERROR页面
 
 //登录Route
 Route::get('adminLogin','admin/login/index');

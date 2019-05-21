@@ -26,7 +26,7 @@
                             <div class="layui-form-item layui-input-md">
                                 <label class="layui-form-label">模块名称</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="modular" lay-verify="modular" autocomplete="off" placeholder="设置模块路由名称,例：admin" class="layui-input">
+                                    <input type="text" name="modular" lay-verify="modular" autocomplete="off" placeholder="设置模块路由名称,例：admin (注意不要与现有路由名称重复)" class="layui-input">
                                 </div>
                             </div>
 
@@ -101,8 +101,8 @@
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
-        $.post("/router/save_modular",data.field,function(res){
-            layer.msg(res.data);
+        $.post("/aoogi/router/save_modular",data.field,function(res){
+            layer.msg(res.msg);
             /*if(res.code === 1){
                 window.location.href="#"+res.url;
             }*/

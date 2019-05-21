@@ -145,6 +145,9 @@ return [
 
     //自定义配置项
 
+    //网站域名
+    'website_url'=>'localhost',
+
     //Admin权限及用户验证配置项
     //加密、解密密钥
     'crypt_key'         => '84e7871c139909e1982c05be74c3d06d',
@@ -155,7 +158,20 @@ return [
     //默认管理员帐户字段名
     'admin_name'            => 'account',
     //kit_admin主框架路由
-    'admin_main'            =>  'admin/home/home'
+    'admin_main'            =>  'admin/home/home',
+
+    /*
+     * 前台用户验证配置项
+     * */
+
+    //加密、解密密钥
+    'crypt_user_key'         => '84e7871c139909e1982c05be74c3d06d',
+    //默认用户表
+    'user_table'           => 'user',
+    //默认帐户字段名
+    'user_name'            => 'phone',
+    //默认帐户密码字段名
+    'user_pwd'            => 'password',
 
 
 ];

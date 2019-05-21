@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.7.17)
-# Date: 2019-05-20 23:29:46
+# Date: 2019-05-21 11:09:15
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -30,7 +30,40 @@ CREATE TABLE `adminer` (
 # Data for table "adminer"
 #
 
-INSERT INTO `adminer` VALUES (1,'admin','96e79218965eb72c92a549dd5a330112','Amdin',1,1,1,'admin12sdf','127.0.0.1',1558362462,18,'2018-10-23 13:54:17'),(2,'guest','96e79218965eb72c92a549dd5a330112','guest',1,2,0,'guest','127.0.0.1',1542330568,5,'2018-10-23 15:16:25'),(3,'tests','96e79218965eb72c92a549dd5a330112','Test',1,2,0,'TEST',NULL,NULL,0,'2018-11-14 13:13:10');
+INSERT INTO `adminer` VALUES (1,'admin','96e79218965eb72c92a549dd5a330112','Amdin',1,1,1,'admin12sdf','127.0.0.1',1558406030,19,'2018-10-23 13:54:17'),(2,'guest','96e79218965eb72c92a549dd5a330112','guest',1,2,0,'guest','127.0.0.1',1542330568,5,'2018-10-23 15:16:25'),(3,'tests','96e79218965eb72c92a549dd5a330112','Test',1,2,0,'TEST',NULL,NULL,0,'2018-11-14 13:13:10');
+
+#
+# Structure for table "choices"
+#
+
+DROP TABLE IF EXISTS `choices`;
+CREATE TABLE `choices` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `questions_id` int(11) unsigned DEFAULT NULL COMMENT '考题ID',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=》未删除；时间戳=》删除时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='选择题项';
+
+#
+# Data for table "choices"
+#
+
+
+#
+# Structure for table "classify"
+#
+
+DROP TABLE IF EXISTS `classify`;
+CREATE TABLE `classify` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL COMMENT '分类名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分类';
+
+#
+# Data for table "classify"
+#
+
 
 #
 # Structure for table "config"
@@ -49,6 +82,43 @@ CREATE TABLE `config` (
 #
 
 INSERT INTO `config` VALUES (1,'平台标识','AOZOM后台管理系统'),(2,'应用名称','AOOGI');
+
+#
+# Structure for table "course"
+#
+
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` char(7) DEFAULT NULL COMMENT '课程代码',
+  `title` varchar(255) DEFAULT NULL COMMENT '课程名称',
+  `classify_id` int(11) unsigned DEFAULT NULL COMMENT '分类ID',
+  `mold_id` varchar(255) DEFAULT NULL COMMENT '考题类型',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='课程';
+
+#
+# Data for table "course"
+#
+
+
+#
+# Structure for table "mold"
+#
+
+DROP TABLE IF EXISTS `mold`;
+CREATE TABLE `mold` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `code` tinyint(3) unsigned DEFAULT NULL COMMENT '类型代码-不允许重复',
+  `title` varchar(255) DEFAULT NULL COMMENT '类型标题',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考题类型';
+
+#
+# Data for table "mold"
+#
+
 
 #
 # Structure for table "permissions"
@@ -72,6 +142,31 @@ CREATE TABLE `permissions` (
 INSERT INTO `permissions` VALUES (1,'超级管理员组','1-29-30-31-2-3-4-5-6-7-8-9-18-28-10-11-12-13-14-15-16-19-27-17-20-21-22-23-24-25-26-32',1,'2018-11-06 16:15:51'),(2,'GUEST','1-29-30-31-2-3-4-5-6-7-8-33-34-35-36',1,'2018-11-07 16:04:06');
 
 #
+# Structure for table "questions"
+#
+
+DROP TABLE IF EXISTS `questions`;
+CREATE TABLE `questions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `code` char(7) DEFAULT NULL COMMENT '课程代码',
+  `course_id` int(11) unsigned DEFAULT NULL COMMENT '课程ID',
+  `mold_id` int(11) unsigned DEFAULT NULL COMMENT '类型ID',
+  `title` varchar(255) DEFAULT NULL COMMENT '考试题目',
+  `correct` varchar(255) DEFAULT NULL COMMENT '正确答案',
+  `analysis` text COMMENT '答案解析',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '考题状态：1=》等审核；2=》已通过；3=》已驳回',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=》未删除；时间戳=》删除时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考题库';
+
+#
+# Data for table "questions"
+#
+
+
+#
 # Structure for table "router"
 #
 
@@ -91,7 +186,7 @@ CREATE TABLE `router` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `router_key` (`id`,`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='路由规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='路由规则表';
 
 #
 # Data for table "router"

@@ -89,7 +89,7 @@ return [
     // IP代理获取标识
     'http_agent_ip'          => 'X-REAL-IP',
     // URL伪静态后缀
-    'url_html_suffix'        => 'html',
+    'url_html_suffix'        => '',
     // URL普通方式参数 用于自动生成
     'url_common_param'       => false,
     // URL参数方式 0 按名称成对解析 1 按顺序解析
@@ -97,7 +97,7 @@ return [
     // 是否开启路由延迟解析
     'url_lazy_route'         => false,
     // 是否强制使用路由
-    'url_route_must'         => false,
+    'url_route_must'         => true,
     // 合并路由规则
     'route_rule_merge'       => false,
     // 路由是否完全匹配
@@ -142,5 +142,36 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
+
+    //自定义配置项
+
+    //网站域名
+    'website_url'=>'localhost',
+
+    //Admin权限及用户验证配置项
+    //加密、解密密钥
+    'crypt_key'         => '84e7871c139909e1982c05be74c3d06d',
+    //默认系统超级管理员帐户名称
+    'default_admin'         => 'admin',
+    //默认管理员用户表
+    'admin_table'           => 'adminer',
+    //默认管理员帐户字段名
+    'admin_name'            => 'account',
+    //kit_admin主框架路由
+    'admin_main'            =>  'admin/home/home',
+
+    /*
+     * 前台用户验证配置项
+     * */
+
+    //加密、解密密钥
+    'crypt_user_key'         => '84e7871c139909e1982c05be74c3d06d',
+    //默认用户表
+    'user_table'           => 'user',
+    //默认帐户字段名
+    'user_name'            => 'phone',
+    //默认帐户密码字段名
+    'user_pwd'            => 'password',
+
 
 ];

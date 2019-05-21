@@ -73,7 +73,7 @@ class Router extends AdminController
         if(!$validate->scene('save')->check($data)){
             return $this->failJson($validate->getError());
         }
-        return RouteM::create($data) ?$this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
+        return RouteM::create($data) ? $this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
     }
 
     /**
@@ -107,11 +107,101 @@ class Router extends AdminController
         $pResource = RouteM::where('id',$data['pid'])->value('pid');
 
         $resp = array();
-        if(isset($data['type']['site']) ){
-            var_dump(1);die;
+        $pid = $data['pid'];
+        if(isset($data['type']['site'])){
+            if($pResource != 0){
+                return $this->failJson('父级路由为二级时，不可存在“设置”项');
+            }
+            $siteResp['pid'] =  $pid;
+            $siteResp['router'] = '/aoogi/'.$data['modular'];
+            $siteResp['menu'] = '/aoogi/'.$data['modular'];
+            $siteResp['path'] = 'admin/'.$data['modular'].'/index';
+            $siteResp['title'] = $data['title'].'设置';
+            $siteResp['icon'] = '#xe653;';
+            $siteResp['open'] = 0;
+            $siteResp['main'] = 1;
+            $siteResp['status'] = 1;
+            $siteResp['opts'] = 1;
+            if($res = RouteM::create($siteResp)){
+                $pid = $res->id;
+            }else{
+                return $this->failJson('添加失败');
+            }
         }
-        var_dump($data);die;
-        return RouteM::create($data) ?$this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
+        if(isset($data['type']['list'])){
+            $resp[1]['router'] = '/aoogi/'.$data['modular'].'/data';
+            $resp[1]['menu'] = '/aoogi/'.$data['modular'].'/data';
+            $resp[1]['path'] = 'admin/'.$data['modular'].'/getData';
+            $resp[1]['title'] = $data['title'].'列表';
+            $resp[1]['pid'] =  $pid;
+            $resp[1]['status'] = 1;
+        }
+        if(isset($data['type']['status'])){
+            $resp[2]['router'] = '/aoogi/'.$data['modular'].'/status';
+            $resp[2]['menu'] = '/aoogi/'.$data['modular'].'/status';
+            $resp[2]['path'] = 'admin/'.$data['modular'].'/setStatus';
+            $resp[2]['title'] = $data['title'].'状态';
+            $resp[2]['pid'] =  $pid;
+            $resp[2]['status'] = 1;
+            $resp[2]['opts'] = 0;
+        }
+        if(isset($data['type']['create'])){
+            $resp[3]['router'] = '/aoogi/'.$data['modular'].'/create';
+            $resp[3]['menu'] = '/aoogi/'.$data['modular'].'/create';
+            $resp[3]['path'] = 'admin/'.$data['modular'].'/create';
+            $resp[3]['title'] = '新增'.$data['title'];
+            $resp[3]['pid'] =  $pid;
+            $resp[3]['status'] = 1;
+            $resp[3]['opts'] = 1;
+
+            $resp[4]['router'] = '/aoogi/'.$data['modular'];
+            $resp[4]['menu'] = '/aoogi/'.$data['modular'].'/save';
+            $resp[4]['path'] = 'admin/'.$data['modular'].'/save';
+            $resp[4]['title'] = '保存'.$data['title'];
+            $resp[4]['pid'] =  $pid;
+            $resp[4]['status'] = 1;
+            $resp[4]['opts'] = 0;
+        }
+        if(isset($data['type']['edit'])){
+            $resp[5]['router'] = '/aoogi/'.$data['modular'].'/edit/:id';
+            $resp[5]['menu'] = '/aoogi/'.$data['modular'].'/edit/*';
+            $resp[5]['path'] = 'admin/'.$data['modular'].'/edit';
+            $resp[5]['title'] = '编辑'.$data['title'];
+            $resp[5]['pid'] =  $pid;
+            $resp[5]['status'] = 1;
+            $resp[5]['opts'] = 1;
+
+            $resp[6]['router'] = '/aoogi/'.$data['modular'].'/:id';
+            $resp[6]['menu'] = '/aoogi/'.$data['modular'].'/update/*';
+            $resp[6]['path'] = 'admin/'.$data['modular'].'/update';
+            $resp[6]['title'] = '更新'.$data['title'];
+            $resp[6]['pid'] =  $pid;
+            $resp[6]['status'] = 1;
+            $resp[6]['opts'] = 0;
+        }
+        if(isset($data['type']['del'])){
+            $resp[7]['router'] = '/aoogi/'.$data['modular'].'/:id';
+            $resp[7]['menu'] = '/aoogi/'.$data['modular'].'/del/*';
+            $resp[7]['path'] = 'admin/'.$data['modular'].'/delete';
+            $resp[7]['title'] = '删除'.$data['title'];
+            $resp[7]['pid'] =  $pid;
+            $resp[7]['status'] = 1;
+            $resp[7]['opts'] = 0;
+        }
+        if(isset($data['type']['read'])){
+            $resp[8]['router'] = '/aoogi/'.$data['modular'].'/:id';
+            $resp[8]['menu'] = '/aoogi/'.$data['modular'].'/read/*';
+            $resp[8]['path'] = 'admin/'.$data['modular'].'/read';
+            $resp[8]['title'] = '查看'.$data['title'];
+            $resp[8]['pid'] =  $pid;
+            $resp[8]['status'] = 1;
+            $resp[8]['opts'] = 1;
+        }
+
+
+        //var_dump($resp);die;
+        $routerM = new RouteM;
+        return $routerM->saveAll($resp) ?$this->successJson('新增成功','/aoogi/router') : $this->failJson('添加失败');
     }
 
     /**

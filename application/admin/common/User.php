@@ -140,6 +140,7 @@ class User
             'timestamp' => time()
         );
         session(self::$sessionKey, $sArrs);
+        return true;
     }
 
     /**
