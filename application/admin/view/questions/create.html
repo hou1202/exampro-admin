@@ -1,3 +1,8 @@
+<style>
+    .layui-input-many {
+        margin-bottom:5px;:
+    }
+</style>
 <div class="layui-fluid">
     <div class="layui-row">
         <div class="layui-col-xs12">
@@ -16,37 +21,133 @@
 
                         <form class="layui-form">
 
-                            <div class="layui-form-item layui-input-md">
-                                <label class="layui-form-label">课程代码</label>
-                                <div class="layui-input-block">
-                                    <input type="number" name="code" lay-verify="required|number|code1|code2" autocomplete="off" placeholder="设置课程代码" class="layui-input">
-                                </div>
-                            </div>
-
+                            <!--课程名称-->
                             <div class="layui-form-item layui-input-md">
                                 <label class="layui-form-label">课程名称</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="title" lay-verify="required|title" autocomplete="off" placeholder="设置课程名称" class="layui-input">
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item layui-input-md">
-                                <label class="layui-form-label">课程分类</label>
                                 <div class="layui-input-block ">
-                                    <select name="classify_id">
-                                        {volist name="Classify" id="c"}
-                                            <option value="{$c.id}">{$c.title}</option>
+                                    <select name="course_id" lay-filter="courseTitle">
+                                        {volist name="Course" id="c"}
+                                            <option value="{$c.id}" title="{$c.code}">{$c.title}</option>
                                         {/volist}
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="layui-form-item layui-input-bg">
-                                <label class="layui-form-label">考题类型</label>
+                            <!--课程代码-->
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">课程代码</label>
+                                <div class="layui-input-block">
+                                    <input type="number" name="code" id="courseCode" readonly value="{$Course.0.code}" lay-verify="required|number" autocomplete="off" placeholder="设置课程代码" class="layui-input">
+                                </div>
+                            </div>
+
+                            <!--考题分类-->
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">考题分类</label>
                                 <div class="layui-input-block ">
-                                    {volist name="Mold" id="m"}
-                                        <input type="checkbox" name="mold_id[{$m.id}]" value="{$m.id}" title="{$m.title}">
-                                    {/volist}
+                                    <select name="mold_id" lay-filter="moldTitle">
+                                        {volist name="Mold" id="m"}
+                                            <option value="{$m.id}">{$m.title}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!--考题题目-->
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">考题题目</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required|title" autocomplete="off" placeholder="设置考题题目" class="layui-input">
+                                </div>
+                            </div>
+
+                            <!--答案选项[单]-->
+                            <div class="layui-form-item layui-input-md" id="singleChoice">
+                                <label class="layui-form-label">答案选项</label>
+                                <div class="layui-input-block ">
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">A. </label>
+                                        <input type="text" name="choice[]" lay-verify="required|title" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">B. </label>
+                                        <input type="text" name="choice[]" lay-verify="required|title" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">C. </label>
+                                        <input type="text" name="choice[]" lay-verify="required|title" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">D. </label>
+                                        <input type="text" name="choice[]" lay-verify="required|title" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--正确答案[单]-->
+                            <div class="layui-form-item layui-input-md" id="singleAnswer">
+                                <label class="layui-form-label">正确答案[单]</label>
+                                <div class="layui-input-block ">
+                                    <input type="radio" name="corrects" value="0" title="A">
+                                    <input type="radio" name="corrects" value="1" title="B">
+                                    <input type="radio" name="corrects" value="2" title="C">
+                                    <input type="radio" name="corrects" value="3" title="D">
+                                </div>
+                            </div>
+
+                            <!--答案选项[多]-->
+                            <div class="layui-form-item layui-input-md" id="multipleChoice" style="display:none">
+                                <label class="layui-form-label">答案选项</label>
+                                <div class="layui-input-block ">
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">A. </label>
+                                        <input type="text" name="" lay-verify="" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">B. </label>
+                                        <input type="text" name="" lay-verify="" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">C. </label>
+                                        <input type="text" name="" lay-verify="" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">D. </label>
+                                        <input type="text" name="" lay-verify="" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                    <div class="custom-input-block">
+                                        <label class="custom-form-label">E. </label>
+                                        <input type="text" name="" lay-verify="" autocomplete="off" placeholder="设置答案选项" class="layui-input custom-input-style">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--正确答案[多]-->
+                            <div class="layui-form-item layui-input-md" id="multipleAnswer" style="display:none">
+                                <label class="layui-form-label">正确答案[多]</label>
+                                <div class="layui-input-block ">
+                                    <input type="checkbox" name="" value="0" title="A">
+                                    <input type="checkbox" name="" value="1" title="B">
+                                    <input type="checkbox" name="" value="2" title="C">
+                                    <input type="checkbox" name="" value="3" title="D">
+                                    <input type="checkbox" name="" value="4" title="E">
+                                </div>
+                            </div>
+
+                            <!--正确答案[判]-->
+                            <div class="layui-form-item layui-input-md" id="judgeAnswer" style="display:none">
+                                <label class="layui-form-label">正确答案[判]</label>
+                                <div class="layui-input-block ">
+                                    <input type="radio" name="" value="0" title="对">
+                                    <input type="radio" name="" value="1" title="错">
+                                </div>
+                            </div>
+
+                            <!--答案解析-->
+                            <div class="layui-form-item layui-input-md">
+                                <label class="layui-form-label">答案解析</label>
+                                <div class="layui-input-block">
+                                    <textarea name="analysis" placeholder="请输入答案解析内容" class="layui-textarea" lay-verify="required|title"></textarea>
                                 </div>
                             </div>
 
@@ -79,27 +180,54 @@
     //自定义验证规则
     form.verify({
         title: function(value) {
-            if (value.length < 1 || value.length > 25) {
-                return '课程名称名称长度应在1-25个字符之间';
+            if (value.length < 1 || value.length > 255) {
+                return '文字长度应在1-255个字符之间';
             }
-        },
-        code1: [/^[0-9]*$/, '类型代码设置有误；例：00182'],
-        code2: function(value) {
-            if (value.length > 6) {
-                return '类型代码设置有误；例：00182';
-            }
-        },
+        }
+    });
 
+    //监听改变课程代码
+    form.on('select(courseTitle)',function(data){
+        var codeVal = $(data.elem).find("option:selected").attr("title");
+        $("#courseCode").val(codeVal)
+    });
 
+    form.on('select(moldTitle)',function(data){
+      if(data.value == 1){
+            $("#singleChoice").show().find('input').attr('name','choice[]').attr('lay-verify','required|title');
+            $("#singleAnswer").show().find('input').attr('name','corrects');
+            $("#multipleChoice").hide().find('input').attr('name','').attr('lay-verify','');
+            $("#multipleAnswer").hide().find('input').attr('name','');
+            $("#judgeAnswer").hide().find('input').attr('name','');
+      }else if(data.value == 2){
+            $("#singleChoice").hide().find('input').attr('name','');
+            $("#singleAnswer").hide().find('input').attr('name','');
+            $("#multipleChoice").show().find('input').attr('name','choice[]').attr('lay-verify','required|title');
+            $("#multipleAnswer").show().find('input').attr('name','corrects[]');
+            $("#judgeAnswer").hide().find('input').attr('name','');
+      } else if(data.value == 3){
+            $("#singleChoice").hide().find('input').attr('name','').attr('lay-verify','');
+            $("#singleAnswer").hide().find('input').attr('name','');
+            $("#multipleChoice").hide().find('input').attr('name','').attr('lay-verify','');
+            $("#multipleAnswer").hide().find('input').attr('name','');
+            $("#judgeAnswer").show().find('input').attr('name','corrects');
+      }else{
+            $("#singleChoice").hide().find('input').attr('name','').attr('lay-verify','');
+            $("#singleAnswer").hide().find('input').attr('name','');
+            $("#multipleChoice").hide().find('input').attr('name','').attr('lay-verify','');
+            $("#multipleAnswer").hide().find('input').attr('name','');
+            $("#judgeAnswer").hide().find('input').attr('name','');
+      }
     });
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
-        $.post("/aoogi/course",data.field,function(res){
+        console.log(data.field);
+        /*$.post("/aoogi/questions",data.field,function(res){
             layer.msg(res.msg);
-            if(res.url != "")
-                window.location.href = "#" + res.url;
-        });
+            /!*if(res.url != "")
+                window.location.href = "#" + res.url;*!/
+        });*/
         return false;
     });
 

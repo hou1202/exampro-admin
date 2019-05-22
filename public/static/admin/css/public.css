@@ -70,6 +70,24 @@
     font-weight: 900;
 }
 
+.custom-input-block {
+    overflow: hidden;
+    margin-bottom:5px;
+}
+.custom-form-label {
+    float:left;
+    display:block;
+    padding:9px 15px;
+    width:30px;
+    font-weight:400;
+    line-height:20px;
+    text-align:center;
+}
+.custom-input-style {
+    float:left;
+    width:calc(100% - 60px);
+}
+
 
 
 

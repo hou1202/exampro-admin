@@ -6,7 +6,7 @@ use app\common\controller\AdminController;
 use think\Request;
 use app\admin\model\Questions as QuestionsM;
 use app\admin\validate\Questions as QuestionsV;
-use app\admin\model\Classify;
+use app\admin\model\Course;
 use app\admin\model\Mold;
 
 
@@ -63,9 +63,9 @@ class Questions extends AdminController
      */
     public function create()
     {
-        $classify = Classify::field('id,title')->where('pid',0)->select();
+        $course = Course::field('id,code,title')->select();
         $mold = Mold::all();
-        $this->assign('Classify',$classify);
+        $this->assign('Course',$course);
         $this->assign('Mold',$mold);
         return view('questions/create');
     }
