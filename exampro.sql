@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.7.17)
-# Date: 2019-05-21 18:15:08
+# Date: 2019-05-26 18:14:27
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -40,6 +40,7 @@ DROP TABLE IF EXISTS `choices`;
 CREATE TABLE `choices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `questions_id` int(11) unsigned DEFAULT NULL COMMENT '考题ID',
+  `opts` varchar(255) DEFAULT NULL COMMENT '选项',
   `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=》未删除；时间戳=》删除时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='选择题项';
@@ -61,7 +62,7 @@ CREATE TABLE `classify` (
   `pid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID，一级分类PID为0',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分类';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='分类';
 
 #
 # Data for table "classify"
@@ -100,13 +101,13 @@ CREATE TABLE `course` (
   `mold_id` varchar(255) DEFAULT NULL COMMENT '考题类型',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='课程';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='课程';
 
 #
 # Data for table "course"
 #
 
-INSERT INTO `course` VALUES (1,'00182','市政学',2,'1-2-4-5-6','2019-05-21 17:19:37'),(2,'00183','法学概论',2,'1-2-3-4-5-6','2019-05-21 17:51:19');
+INSERT INTO `course` VALUES (1,'00182','公共关系学',2,'1-2-4-5-6','2019-05-21 17:19:37'),(2,'00183','法学概论',2,'1-2-3-4-5-6','2019-05-21 17:51:19');
 
 #
 # Structure for table "mold"
@@ -119,7 +120,7 @@ CREATE TABLE `mold` (
   `title` varchar(255) DEFAULT NULL COMMENT '类型标题',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考题类型';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='考题类型';
 
 #
 # Data for table "mold"
@@ -193,7 +194,7 @@ CREATE TABLE `router` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `router_key` (`id`,`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='路由规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COMMENT='路由规则表';
 
 #
 # Data for table "router"

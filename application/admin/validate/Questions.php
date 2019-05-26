@@ -14,11 +14,13 @@ class Questions extends CommonValidate
      * @var array
      */	
 	protected $rule = [
-	    'id|课程信息' => 'require|number|isExist:course,id',
-        'title|课程名称' => 'require|max:25',
-        'code|课程代码' => 'require|number|max:7',
-        'classify_id|课程分类' =>'require|isExist:classify,id',
-        'mold_id|考题类型' =>'require|array'
+	    'id|考题信息' => 'require|isExist:course,id',
+        'course_id|课程名称' => 'require|isExist:course,id',
+        'code|课程代码' => 'require|isExist:course,code',
+        'mold_id|考题类型' =>'require|isExist:mold,id',
+        'title|考题标题' => 'require|max:255',
+        'analysis|答案解析' => 'require',
+
     ];
     
     /**
@@ -28,10 +30,13 @@ class Questions extends CommonValidate
      * @var array
      */	
     protected $message = [
-        'id.require' => '课程信息有误',
-        'id.number' => '课程信息有误',
-        'id.isExist' => '课程信息有误',
-        'classify_id.isExist' => '课程分类信息有误',
+        'id.require' => '考题信息有误',
+        'id.isExist' => '考题信息有误',
+        'course_id.require' => '课程名称信息有误',
+        'course_id.isExist' => '课程名称信息有误',
+        'code.require' => '课程代码信息有误',
+        'code.isExist' => '课程代码信息有误',
+        'mold_id.require' => '考题类型信息有误',
         'mold_id.isExist' => '考题类型信息有误',
     ];
 
@@ -40,7 +45,7 @@ class Questions extends CommonValidate
      * 格式：'场景名' => ['字段名1','字段名2']
      * */
     protected $scene = [
-        'save' => ['title','code','classify_id','mold_id'],
+        'save' => ['course_id','code','mold_id','title','analysis'],
         'edit' => ['id','title','code','classify_id','mold_id'],
     ];
 

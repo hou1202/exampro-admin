@@ -5,7 +5,7 @@ namespace app\admin\model;
 use think\Model;
 use think\model\concern\SoftDelete;
 
-class Questions extends Model
+class Choices extends Model
 {
     /*
      * $pk      设置主键
@@ -16,12 +16,12 @@ class Questions extends Model
     /*
      *$table    当前模型对应表名，为完整表名
      * */
-    protected $table = 'questions';
+    protected $table = 'choices';
 
     /*
      * $readonly    定义只读字段保护
      * */
-    protected $readonly = ['id'];
+    protected $readonly = ['id','questions_id'];
 
     /*
      * $field   开启数据表字段验证

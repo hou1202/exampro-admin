@@ -88,10 +88,10 @@
                             <div class="layui-form-item layui-input-md" id="singleAnswer">
                                 <label class="layui-form-label">正确答案[单]</label>
                                 <div class="layui-input-block ">
-                                    <input type="radio" name="corrects" value="0" title="A">
-                                    <input type="radio" name="corrects" value="1" title="B">
-                                    <input type="radio" name="corrects" value="2" title="C">
-                                    <input type="radio" name="corrects" value="3" title="D">
+                                    <input type="radio" name="correct" value="A" title="A">
+                                    <input type="radio" name="correct" value="B" title="B">
+                                    <input type="radio" name="correct" value="C" title="C">
+                                    <input type="radio" name="correct" value="D" title="D">
                                 </div>
                             </div>
 
@@ -126,11 +126,11 @@
                             <div class="layui-form-item layui-input-md" id="multipleAnswer" style="display:none">
                                 <label class="layui-form-label">正确答案[多]</label>
                                 <div class="layui-input-block ">
-                                    <input type="checkbox" name="" value="0" title="A">
-                                    <input type="checkbox" name="" value="1" title="B">
-                                    <input type="checkbox" name="" value="2" title="C">
-                                    <input type="checkbox" name="" value="3" title="D">
-                                    <input type="checkbox" name="" value="4" title="E">
+                                    <input type="checkbox" name="" value="A" title="A">
+                                    <input type="checkbox" name="" value="B" title="B">
+                                    <input type="checkbox" name="" value="C" title="C">
+                                    <input type="checkbox" name="" value="D" title="D">
+                                    <input type="checkbox" name="" value="E" title="E">
                                 </div>
                             </div>
 
@@ -138,16 +138,16 @@
                             <div class="layui-form-item layui-input-md" id="judgeAnswer" style="display:none">
                                 <label class="layui-form-label">正确答案[判]</label>
                                 <div class="layui-input-block ">
-                                    <input type="radio" name="" value="0" title="对">
-                                    <input type="radio" name="" value="1" title="错">
+                                    <input type="radio" name="" value="A" title="对">
+                                    <input type="radio" name="" value="B" title="错">
                                 </div>
                             </div>
 
                             <!--答案解析-->
-                            <div class="layui-form-item layui-input-md">
+                            <div class="layui-form-item layui-input-bg">
                                 <label class="layui-form-label">答案解析</label>
                                 <div class="layui-input-block">
-                                    <textarea name="analysis" placeholder="请输入答案解析内容" class="layui-textarea" lay-verify="required|title"></textarea>
+                                    <textarea id="editor" name="analysis" placeholder="请输入答案解析内容" lay-verify="required"></textarea>
                                 </div>
                             </div>
 
@@ -164,6 +164,12 @@
     </div>
 </div>
 
+<!--上传文件引入文件-->
+{load href="/static/plugin/jquery/jquery-3.1.1.js" /}
+{load href="/static/plugin/aoupload/css/globle.css" /}
+{load href="/static/plugin/aoupload/js/webuploader.min.js" /}
+{load href="/static/plugin/aoupload/js/diyUpload.js" /}
+{load href="/static/plugin/kind/kind-all-min.js" /}
 
 <script>
   layui.use(['form', 'layedit', 'route'], function() {
@@ -195,22 +201,22 @@
     form.on('select(moldTitle)',function(data){
       if(data.value == 1){
             $("#singleChoice").show().find('input').attr('name','choice[]').attr('lay-verify','required|title');
-            $("#singleAnswer").show().find('input').attr('name','corrects');
+            $("#singleAnswer").show().find('input').attr('name','correct');
             $("#multipleChoice").hide().find('input').attr('name','').attr('lay-verify','');
             $("#multipleAnswer").hide().find('input').attr('name','');
             $("#judgeAnswer").hide().find('input').attr('name','');
       }else if(data.value == 2){
-            $("#singleChoice").hide().find('input').attr('name','');
+            $("#singleChoice").hide().find('input').attr('name','').attr('lay-verify','');;
             $("#singleAnswer").hide().find('input').attr('name','');
             $("#multipleChoice").show().find('input').attr('name','choice[]').attr('lay-verify','required|title');
-            $("#multipleAnswer").show().find('input').attr('name','corrects[]');
+            $("#multipleAnswer").show().find('input').attr('name','correct[]');
             $("#judgeAnswer").hide().find('input').attr('name','');
       } else if(data.value == 3){
             $("#singleChoice").hide().find('input').attr('name','').attr('lay-verify','');
             $("#singleAnswer").hide().find('input').attr('name','');
             $("#multipleChoice").hide().find('input').attr('name','').attr('lay-verify','');
             $("#multipleAnswer").hide().find('input').attr('name','');
-            $("#judgeAnswer").show().find('input').attr('name','corrects');
+            $("#judgeAnswer").show().find('input').attr('name','correct');
       }else{
             $("#singleChoice").hide().find('input').attr('name','').attr('lay-verify','');
             $("#singleAnswer").hide().find('input').attr('name','');
@@ -222,14 +228,35 @@
 
     //监听提交
     form.on('submit(form_submit)', function(data) {
-        console.log(data.field);
-        /*$.post("/aoogi/questions",data.field,function(res){
+
+        $.post("/aoogi/questions",data.field,function(res){
             layer.msg(res.msg);
-            /!*if(res.url != "")
-                window.location.href = "#" + res.url;*!/
-        });*/
+            /*if(res.url != "")
+                window.location.href = "#" + res.url;*/
+        });
         return false;
     });
+
+      //实例化KindEditor编辑器
+      KindEditor.create($('#editor'), {
+          allowImageRemote: false,
+          basePath: '/static/plugin/kind/',
+          themesPath: '/static/plugin/kind/themes/',
+          pluginsPath: '/static/plugin/kind/plugins/',
+          langPath: '/static/plugin/kind/lang/',
+          uploadJson: '/uploader',
+          filePostName: 'file',    //imgFile是编辑器中图片上传的默认表单域名称
+          width: '100%',
+          minHeight: 400,    //最小高度，不用写px单位
+          resizeType: 1,     //2时可以拖动改变宽度和高度，1时只能改变高度，0时不能拖动。
+          allowImageUpload: true,       //允许本地上传图片
+          extraFileUploadParams: '',       //上传图片、Flash、视音频、文件时，支持添加别的参数一并传到服务器
+          afterBlur: function () {
+              //编辑器失去焦点时，同步编辑器中的内容到textarea，在异步提交内容的时候，必须写！否则textarea中的值是不会改变的
+              this.sync();
+          }
+
+      });
 
   });
 </script>

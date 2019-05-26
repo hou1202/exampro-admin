@@ -8,6 +8,8 @@ use app\admin\model\Questions as QuestionsM;
 use app\admin\validate\Questions as QuestionsV;
 use app\admin\model\Course;
 use app\admin\model\Mold;
+use app\admin\model\Choices;
+use think\Db;
 
 
 class Questions extends AdminController
@@ -83,8 +85,64 @@ class Questions extends AdminController
         $validate = new QuestionsV();
         if(!$validate->scene('save')->check($data))
             return $this->failJson($validate->getError());
-        $data['mold_id'] = implode('-',$data['mold_id']);
-        return QuestionsM::create($data) ? $this->successJson('新增成功','/aoogi/questions') : $this->failJson('添加失败');
+        /**
+         * 单选或多选时，选项信息验证
+         */
+        if($data['mold_id'] == 1 || $data['mold_id'] ==2){
+            if(!isset($data['choice']) || !is_array($data['choice'])){
+                return $this->failJson('答案选项信息有误');
+            }
+            foreach($data['choice'] as $val){
+                if(empty($val))
+                    return $this->failJson('答案选项信息有误');
+            }
+        }
+        /**
+         * 单选、多选、判断时，正确答案信息验证
+         */
+        if($data['mold_id'] == 1 || $data['mold_id'] ==3){  //单选、判断
+            if(!isset($data['correct']) || empty($data['correct'])){
+                return $this->failJson('正确答案信息有误');
+            }
+        }else if($data['mold_id'] == 2){    //多选
+            if(!isset($data['correct']) || !is_array($data['correct'])){
+                return $this->failJson('正确答案信息有误');
+            }
+            foreach($data['correct'] as $val){
+                if(empty($val))
+                    return $this->failJson('正确答案信息有误');
+            }
+            $data['correct']= implode(',',$data['correct']);
+        }
+
+
+
+
+        //事务提交订单
+        Db::startTrans();
+        try{
+
+            $questions = QuestionsM::create($data);
+            if($data['mold_id'] == 1 || $data['mold_id'] == 2){
+                foreach($data['choice'] as $key=>$value){
+                    $choiceData[$key]['questions_id'] = $questions->id;
+                    $choiceData[$key]['opts'] = $value;
+
+                }
+                $choice = new Choices();
+                $choice->saveAll($choiceData);
+            }
+
+
+            // 提交事务
+            Db::commit();
+        }catch(\Exception $e){
+            // 回滚事务
+            Db::rollback();
+            return $this->failJson('添加失败');
+        }
+
+        return $this->successJson('新增成功','/aoogi/questions');
     }
 
 
