@@ -4,6 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 use think\model\concern\SoftDelete;
+use app\admin\model\Course;
 
 class Questions extends Model
 {
@@ -42,9 +43,14 @@ class Questions extends Model
     protected $defaultSoftDelete = 0;
 
 
-    //设置分类文字状态
-    public function getClassifyNameAttr($value,$data){
-        return Classify::where('id',$data['classify_id'])->value('title');
+    //设置课程标题状态
+    public function getCourseNameAttr($value,$data){
+        return Course::where('id',$data['course_id'])->value('title');
+    }
+
+    //设置类型标题状态
+    public function getMoldNameAttr($value,$data){
+        return Mold::where('id',$data['mold_id'])->value('title');
     }
 
 

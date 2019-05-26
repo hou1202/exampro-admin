@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.7.17)
-# Date: 2019-05-26 18:14:27
+# Date: 2019-05-26 22:20:06
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -49,6 +49,7 @@ CREATE TABLE `choices` (
 # Data for table "choices"
 #
 
+INSERT INTO `choices` VALUES (1,1,'马斯洛时期',0),(2,1,'巴纳姆时期',0),(3,1,'艾维.李时期',0),(4,1,'爱德华.伯尼斯时期',0),(5,2,'心理与环境的协调与平衡',0),(6,2,'组织利益与公共利益的协调与平衡',0),(7,2,'总体形象与特定形象的协调与平衡',0),(8,2,'计划与预算的协调与平衡',0),(9,2,'知名度与美誉度的协调与平衡',0);
 
 #
 # Structure for table "classify"
@@ -101,7 +102,7 @@ CREATE TABLE `course` (
   `mold_id` varchar(255) DEFAULT NULL COMMENT '考题类型',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='课程';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='课程';
 
 #
 # Data for table "course"
@@ -173,6 +174,7 @@ CREATE TABLE `questions` (
 # Data for table "questions"
 #
 
+INSERT INTO `questions` VALUES (1,'00182',1,1,'现代公共关系职业化发端于','C','现代公共关系职业化发端于',1,0,'2019-05-26 20:55:09',NULL),(2,'00182',1,2,'组织形象构思与策划的成功取决于','A,B,C,D','组织形象构思与策划的成功取决于<br />\n心理与环境的协调与平衡<br />\n组织利益与公共利益的协调与平衡<br />\n总体形象与特定形象的协调与平衡<br />\n计划与预算的协调与平衡<br />\n知名度与美誉度的协调与平衡<br />',1,0,'2019-05-26 20:56:08',NULL),(3,'00182',1,4,'公共关系在我国的发展主要表现在哪些方面',NULL,'公共关系在我国的发展主要表现在哪些方面',1,0,'2019-05-26 20:56:44',NULL),(4,'00182',1,5,'试述公共关系人员应遵守的道德规范',NULL,'试述公共关系人员应遵守的道德规范',1,0,'2019-05-26 20:56:57',NULL);
 
 #
 # Structure for table "router"

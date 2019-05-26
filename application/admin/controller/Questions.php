@@ -33,7 +33,7 @@ class Questions extends AdminController
             $map[] = ['id|title|code','like','%'.trim($data['keyword']).'%'];
         }
         $list = QuestionsM::where($map)
-            ->append(['classify_name'])
+            ->append(['course_name','mold_name'])
             ->limit(($data['page']-1)*$data['limit'],$data['limit'])
             ->select();
         $count = QuestionsM::where($map)->count('id');
@@ -115,9 +115,6 @@ class Questions extends AdminController
             $data['correct']= implode(',',$data['correct']);
         }
 
-
-
-
         //事务提交订单
         Db::startTrans();
         try{
@@ -132,7 +129,6 @@ class Questions extends AdminController
                 $choice = new Choices();
                 $choice->saveAll($choiceData);
             }
-
 
             // 提交事务
             Db::commit();

@@ -18,8 +18,9 @@ class Questions extends CommonValidate
         'course_id|课程名称' => 'require|isExist:course,id',
         'code|课程代码' => 'require|isExist:course,code',
         'mold_id|考题类型' =>'require|isExist:mold,id',
-        'title|考题标题' => 'require|max:255',
+        'title|考题标题' => 'require|max:255|unique:questions,title',
         'analysis|答案解析' => 'require',
+        'status|考题状态' => 'require|in:1,2,3',
 
     ];
     
@@ -38,6 +39,8 @@ class Questions extends CommonValidate
         'code.isExist' => '课程代码信息有误',
         'mold_id.require' => '考题类型信息有误',
         'mold_id.isExist' => '考题类型信息有误',
+        'title.unique' => '考题已存在',
+        'status.in' => '考题状态有误'
     ];
 
     /*
@@ -45,7 +48,7 @@ class Questions extends CommonValidate
      * 格式：'场景名' => ['字段名1','字段名2']
      * */
     protected $scene = [
-        'save' => ['course_id','code','mold_id','title','analysis'],
+        'save' => ['course_id','code','mold_id','title','analysis','status'],
         'edit' => ['id','title','code','classify_id','mold_id'],
     ];
 
