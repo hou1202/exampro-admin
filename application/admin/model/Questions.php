@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 use think\model\concern\SoftDelete;
-use app\admin\model\Course;
+use app\common\model\User;
 
 class Questions extends Model
 {
@@ -52,6 +52,23 @@ class Questions extends Model
     public function getMoldNameAttr($value,$data){
         return Mold::where('id',$data['mold_id'])->value('title');
     }
+
+    //设置状态文字状态
+    public function getStatusTextAttr($value,$data){
+        $text = [1 => '待审核',2 => '已通过',3 => '已驳回'];
+        return $text[$data['status']];
+    }
+
+    //设置状态文字状态
+    public function getSubTypeAttr($value,$data){
+        if($data['user_id'] == 0){
+            return '系统提交';
+        }else{
+            return User::where('id',$data['user_id'])->value('name');
+        }
+
+    }
+
 
 
 }

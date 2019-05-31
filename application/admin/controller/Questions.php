@@ -33,7 +33,7 @@ class Questions extends AdminController
             $map[] = ['id|title|code','like','%'.trim($data['keyword']).'%'];
         }
         $list = QuestionsM::where($map)
-            ->append(['course_name','mold_name'])
+            ->append(['course_name','mold_name','status_text','sub_type'])
             ->limit(($data['page']-1)*$data['limit'],$data['limit'])
             ->select();
         $count = QuestionsM::where($map)->count('id');
@@ -153,12 +153,17 @@ class Questions extends AdminController
 
         $questions = QuestionsM::get($id);
         if(!$questions) return $this->redirectError('非有效数据信息');
-        $classify = Classify::field('id,title')->where('pid',0)->select();
+        $course = Course::field('id,code,title')->select();
         $mold = Mold::all();
-        $this->assign('Classify',$classify);
+        $this->assign('Course',$course);
         $this->assign('Mold',$mold);
+        $questions['correct'] = explode(',',$questions['correct']);
+        if(in_array($questions['mold_id'],[1,2])){
+            $choices = Choices::field('id,opts')->where('questions_id',$questions['id'])->order('id asc')->select();
+            $this->assign('Choices',$choices);
+        }
         $this->assign('Questions',$questions);
-        $questions['mold_id'] = explode('-',$questions['mold_id']);
+
         return view('questions/edit');
     }
 
